@@ -33,11 +33,11 @@ def callback_inline(call):
 def start(message):
     if message.chat.type == 'private':
         bot.send_message(message.chat.id,
-                         config.text_messages['start'].format(message.from_user.first_name) + msg.repo(),
-                         parse_mode='Markdown', disable_web_page_preview=True, reply_markup=markup.faqButton())
+                         config.text_messages['start'].format(message.from_user.first_name),
+                         parse_mode='Markdown', disable_web_page_preview=True)
         mysql.start_bot(message.chat.id)
     else:
-        bot.reply_to(message, 'Please send me a PM if you\'d like to talk to the Support Team.')
+        bot.reply_to(message, 'Пожалуйста, отправьте мне сообщение в приватный чат, если вы хотите поговорить со службой поддержки.')
 
 
 # FAQ Command
@@ -179,25 +179,25 @@ def ot_handler(message):
                 banned_status = mysql.user_tables(user_id)['banned']
 
                 if banned_status == 0:
-                    bot.reply_to(message, '❌ That user is already un-banned...')
+                    bot.reply_to(message, '❌ Этот пользователь уже разблокирован...')
                 else:
                     mysql.unban_user(user_id)
-                    bot.reply_to(message, '✅ Ok, un-banned that user!')
+                    bot.reply_to(message, '✅ Ок, разблокировали этого пользователя!')
 
             elif msg.getReferrer(message.text):
                 user_id = int(msg.getReferrer(message.text))
                 banned_status = mysql.user_tables(user_id)['banned']
 
                 if banned_status == 0:
-                    bot.reply_to(message, '❌ That user is already un-banned...')
+                    bot.reply_to(message, '❌ Этот пользователь уже разблокирован...')
                 else:
                     mysql.unban_user(user_id)
-                    bot.reply_to(message, '✅ Ok, un-banned that user!')
+                    bot.reply_to(message, '✅ Ок, разблокировали этого пользователя!')
             else:
-                bot.reply_to(message, 'ℹ️ You\'d have to either reply to a message or mention an `Users ID`.',
+                bot.reply_to(message, 'ℹ️ Вам следует либо ответить на сообщение, либо указать `ID пользователя`.',
                              parse_mode='Markdown')
     except TypeError:
-        bot.reply_to(message, '❌ Are you sure I interacted with that user before...?')
+        bot.reply_to(message, '❌ Вы уверены, что я уже взаимодействовал с этим пользователем раньше...?')
 
 
 # Message Forward Handler (User - Support)
@@ -243,7 +243,7 @@ def echo_all(message):
                 if banned_status == 1:
                     # If User is banned - un-ban user and sent message
                     mysql.unban_user(user_id)
-                    bot.reply_to(message, 'ℹ️ *FYI: That user was banned.*\n_Un-banned and sent message!_',
+                    bot.reply_to(message, 'ℹ️ *FYI: Этот пользователь был заблокирован.*\n_Разблокируйте и отправьте сообщение!_',
                                  parse_mode='Markdown')
 
                 elif ticket_status == 1:
@@ -257,11 +257,11 @@ def echo_all(message):
                         return
 
             except telebot.apihelper.ApiException:
-                bot.reply_to(message, '❌ I was unable to send that message...\nThe user might\'ve blocked me.')
+                bot.reply_to(message, '❌ Я не смог отправить это сообщение...\nПользователь, возможно, удалил или заблокировал меня..')
                 return
 
         except Exception as e:
-            bot.reply_to(message, '❌ Invalid command!')
+            bot.reply_to(message, '❌ Неверная команда!')
             return
 
 

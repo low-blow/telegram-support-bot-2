@@ -77,7 +77,7 @@ def snd_handler(user_id, bot, message, txt):
 
     except Exception as e:
         print(e)
-        bot.reply_to(message, '❌ That format is not supported.')
+        bot.reply_to(message, '❌ Данный формат сообщений не поддерживается.')
         return
 
 
@@ -111,7 +111,7 @@ def fwd_handler(user_id, bot, message):
         msg = bot.send_sticker(user_id, message.sticker.file_id)
 
     else:
-        bot.reply_to(message, '❌ That format is not supported and won\'t be forwarded.')
+        bot.reply_to(message, '❌ Данный формат сообщений не поддерживается и не может быть передан в службу поддержки.')
 
     channel_id = re.sub(r"-100(\S+)", r"\1", str(config.support_chat))
     message_id = msg.message_id
@@ -125,7 +125,7 @@ def bad_words_handler(bot, message):
     if config.bad_words_toggle:
         try:
             if re.findall(config.regex_filter['bad_words'], msg_type(message)):
-                bot.reply_to(message, '❗️ Watch your tongue...')
+                bot.reply_to(message, '❗️ Следите за языком...')
                 return bad_words_handler
         except Exception as e:
             pass
@@ -136,18 +136,13 @@ def time_zone():
     return current_time
 
 
-def repo():
-    msg = '\n\n[» Source Code](github.com/vsnz/Telegram-Support-Bot)'
-    return msg
-
-
 def spam_handler_warning(bot, user_id, message):
     if config.spam_toggle:
         ticket_spam = mysql.user_tables(user_id)['open_ticket_spam']
         if ticket_spam > config.spam_protection:
             bot.reply_to(message,
-                         '{}, your messages are not being forwarded anymore. Please wait until the team responded. Thank you.\n\n' \
-                         f'_The support\'s local time is_ `{current_time}`.'.format(message.from_user.first_name),
+                         '{}, Ваши сообщения больше не пересылаются. Пожалуйста, дождитесь ответа. Спасибо.\n\n' \
+                         f'_У нас сейчас_ `{current_time}`.'.format(message.from_user.first_name),
                          parse_mode='Markdown')
             return spam_handler_warning
 
@@ -158,8 +153,8 @@ def spam_handler_blocked(bot, user_id, message):
         if ticket_spam == config.spam_protection - 1:
             fwd_handler(user_id, bot, message)
             bot.reply_to(message,
-                         'We will be with you shortly.\n\n{}, to prevent spam you can only send us *1* more message.\n\n' \
-                         f'_The support\'s local time is_ `{current_time}`.'.format(message.from_user.first_name),
+                         'Не беспокойтесь! Мы свяжемся с вами в ближайшее время.\n\n{}, во избежание спама вы можете отправить нам только *1* сообщение.\n\n' \
+                         f'_У нас сейчас_ `{current_time}`.'.format(message.from_user.first_name),
                          parse_mode='Markdown')
             return spam_handler_blocked
 
