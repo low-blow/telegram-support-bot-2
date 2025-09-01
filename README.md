@@ -64,7 +64,7 @@ The **Telegram Support Bot** 📬 helps you to manage and organize your support 
 1. Create your virtual environment `python3 -m venv Telegram-Support-Bot`
 1. Activate it `source Telegram-Support-Bot/bin/activate && cd Telegram-Support-Bot`
 1. Install all requirements `pip install -r requirements.txt`
-1. Edit and update [`config.py`](https://github.com/fabston/Telegram-Support-Bot/blob/master/config.py)
+1. Copy config.example.py to config.py, edit and update [`config.py`](https://github.com/fabston/Telegram-Support-Bot/blob/master/config.py)
 1. Run the bot `python main.py`
 
 
