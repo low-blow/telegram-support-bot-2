@@ -261,7 +261,7 @@ def echo_all(message):
                 return
 
         except Exception as e:
-            bot.reply_to(message, '❌ Неверная команда!')
+#             bot.reply_to(message, '❌ Неверная команда!')
             return
 
 
